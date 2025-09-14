@@ -5,11 +5,13 @@ export default function Home() {
     <section className="py-16 sm:py-24">
       <div className="max-w-3xl">
         <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">
-          Building clean, fast, and modern web experiences.
+          Personnal website of Arthur Saunier
         </h1>
         <p className="mt-5 text-foreground/70">
-          I’m Arthur, a software engineer. This is my portfolio and blog—notes on the craft, experiments, and things I’m
-          shipping.
+          I am a third-year student at Télécom Nancy, specializing in Internet Systems and Security (ISS).
+        </p>
+        <p className="mt-3 text-foreground/70">
+          This website serves as a platform to share my projects, notes, and experiments related to my interests and studies.
         </p>
         <div className="mt-8 flex gap-3">
           <Link href="/projects" className="inline-flex items-center rounded-md bg-white/10 hover:bg-white/20 border border-white/15 px-4 py-2">

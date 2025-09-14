@@ -52,12 +52,12 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
         )}
       </header>
       {project.cover && (
-        <div className="mb-8 overflow-hidden rounded-lg border border-white/10 bg-white/5">
+        <div className="mb-8 overflow-hidden rounded-lg border border-white/10 bg-white/5 max-w-xs">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={project.cover} alt={project.title} className="w-full h-auto" />
+          <img src={project.cover} alt={project.title} className="max-w-xs h-auto" />
         </div>
       )}
-      <div className="prose prose-invert max-w-none">
+      <div className="content max-w-none">
         {Content}
       </div>
     </article>

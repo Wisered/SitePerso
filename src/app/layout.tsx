@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://example.com"),
+  metadataBase: new URL("https://arthursaunier.fr"),
   title: {
     default: "Arthur Saunier — Portfolio & Blog",
     template: "%s — Arthur Saunier",

@@ -5,7 +5,6 @@ import { compileMDX } from "next-mdx-remote/rsc";
 import { mdxComponents } from "@/components/mdx-components";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode, { type Options as PrettyCodeOptions } from "rehype-pretty-code";
 
 export type PostFrontmatter = {
@@ -57,7 +56,7 @@ export async function renderMDX(source: string) {
     options: {
       mdxOptions: {
         remarkPlugins: [remarkGfm],
-        rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, { behavior: "wrap" }], [rehypePrettyCode, options]],
+        rehypePlugins: [rehypeSlug, [rehypePrettyCode, options]],
       },
       parseFrontmatter: false,
     },
