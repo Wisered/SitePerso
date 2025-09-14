@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+html, body { height: 100%; }
+
+/* MDX prose tweaks */
+.content :where(code):not(:where(pre *)) {
+  padding: .2rem .35rem;
+  border-radius: .25rem;
+  background: rgb(255 255 255 / 0.06);
+}
+
+.content h2, .content h3, .content h4 {
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+.content p { margin-top: 1rem; }
+.content ul { list-style: disc; padding-left: 1.25rem; margin-top: 1rem; }
+.content ol { list-style: decimal; padding-left: 1.25rem; margin-top: 1rem; }
+.content a { color: #93c5fd; }
+.content pre { background: rgb(255 255 255 / 0.04); padding: 1rem; border-radius: .5rem; overflow: auto; }
+.content blockquote { border-left: 2px solid rgb(255 255 255 / 0.2); padding-left: 1rem; color: rgb(212 212 212); }
