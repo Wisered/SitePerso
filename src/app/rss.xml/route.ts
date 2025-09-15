@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getAllPosts } from "@/lib/mdx";
 
 export async function GET() {
-  const base = "https://example.com";
+  const base = "https://arthursaunier.fr";
   const posts = getAllPosts();
   const items = posts
     .map((p) => `

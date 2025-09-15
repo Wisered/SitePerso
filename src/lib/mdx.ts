@@ -28,9 +28,17 @@ export function getAllPosts(): Post[] {
     const full = path.join(contentDir, file);
     const source = fs.readFileSync(full, "utf8");
     const { data, content } = matter(source);
-    const fm = data as Partial<PostFrontmatter>;
+    const fm = data as Record<string, unknown>; // Use Record instead of any
     if (!fm.slug) fm.slug = file.replace(/\.mdx$/, "");
-    return { ...(fm as PostFrontmatter), content } as Post;
+    
+    // Convert date to string if it's a Date object
+    const dateString = fm.date instanceof Date ? fm.date.toISOString() : String(fm.date);
+    
+    return { 
+      ...(fm as PostFrontmatter), 
+      date: dateString,
+      content 
+    } as Post;
   });
   return posts.sort((a, b) => (a.date > b.date ? -1 : 1));
 }
@@ -40,8 +48,20 @@ export function getPostBySlug(slug: string): Post | null {
   if (!fs.existsSync(file)) return null;
   const source = fs.readFileSync(file, "utf8");
   const { data, content } = matter(source);
-  const fm = data as Partial<PostFrontmatter>;
-  return { slug, title: fm.title!, date: fm.date!, summary: fm.summary, image: fm.image, tags: fm.tags, content };
+  const fm = data as Record<string, unknown>; // Use Record instead of any
+  
+  // Convert date to string if it's a Date object
+  const dateString = fm.date instanceof Date ? fm.date.toISOString() : String(fm.date);
+  
+  return { 
+    slug, 
+    title: String(fm.title), 
+    date: dateString, 
+    summary: fm.summary ? String(fm.summary) : undefined, 
+    image: fm.image ? String(fm.image) : undefined, 
+    tags: Array.isArray(fm.tags) ? fm.tags.map(String) : undefined, 
+    content 
+  };
 }
 
 export async function renderMDX(source: string) {
