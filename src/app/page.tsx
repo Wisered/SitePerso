@@ -14,7 +14,7 @@ export default function Home() {
       <section>
         <div className="max-w-3xl">
           <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">
-            Personnal website of Arthur Saunier
+            Personal website of Arthur Saunier
           </h1>
           <p className="mt-5 text-foreground/70">
             I am a third-year student at Télécom Nancy, specializing in Internet Systems and Security (ISS).
