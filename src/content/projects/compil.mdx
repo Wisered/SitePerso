@@ -37,41 +37,12 @@ This project strengthened my skills in **language theory, compiler design, and c
 
 The following code snippets illustrate some of the Mini Python features supported by our compiler:
 ```python# Example Mini Python code
-def sum_of_squares(n):
- if n == 0:
-  return 0
- else:
-  return n * n + sum_of_squares(n - 1)
-
-def reverse_string(s):
- if s == "":
-  return ""
- else:
-  return reverse_string(s[1]) + s[0]
-
-def is_even(n):
- if n % 2 == 0:
-  return true
- else:
-  return false
-
-def multiply_by_three(x):
- return x * 3
-
-def find_max(lst):
- max_val = lst[0]
- for num in lst:
-  if num > max_val:
-   max_val = num
- return max_val
-
-print(sum_of_squares(4))
-print(reverse_string("hello"))
-print(is_even(8))
-print(multiply_by_three(6))
-
-for x in [1, 2, 3, 4, 5]:
- print(find_max([x, 2, 7, 3]))
+def increment_if_positive(x) :
+ if x > 0 :
+  x = x + 1
+ return x
+if __name__ == "__main__" :
+ increment_if_positive(3)
 ```
 
 And then, here is an example of the AST generated for the whole program above:
