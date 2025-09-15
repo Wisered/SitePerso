@@ -1,13 +1,78 @@
 ---
 slug: compil
-title: Compiler project
-date: 2023-15-01
-summary: Created a simple compiler for "mini python" in python
+title: Mini Python Compiler
+date: 2025-01-22
+summary: A custom compiler for a subset of Python, from lexical analysis to abstract syntax trees
+cover: /Compiler/Title.png
 tech:
   - Python
+  - GitLab
 external: https://github.com/Wisered/Compiler-project
 ---
 
-# Compiler project
+The **Mini Python Compiler** is an academic project developed during the 2nd year at Télécom Nancy (Module PCL1).  
+Its goal was to design and implement the **front-end of a compiler** for a simplified version of Python, called *Mini Python*.  
+We built the compiler *from scratch* (no parser generators), focusing on lexical and syntactic analysis as well as abstract syntax tree (AST) construction.
 
-In course of building...
+## **Key Features**
+
+- **Lexical analysis**: token recognition (identifiers, keywords, integers, indentation, etc.) via a custom-built automaton.  
+- **Syntax analysis**: recursive-descent parser based on a formally defined grammar of Mini Python.  
+- **Abstract Syntax Tree (AST)**: structured representation of parsed programs and visualization tools.  
+- **Error handling**: explicit error messages (lexical and syntax errors) with line numbers; continuation of analysis after errors.  
+- **Testing**: validation on both correct Mini Python programs and programs with errors to ensure robustness. 
+
+## **Teamwork & Contributions**
+
+This 3-month project (October 2024 – January 2025) was carried out in a team of 4 students.  
+I contributed to :
+- Factoring the grammar
+- Implementation of lexical & syntax analyzers  
+- AST design and visualization  
+- Error management and testing strategy  
+
+This project strengthened my skills in **language theory, compiler design, and collaborative software development**.
+
+## **Screenshots / Examples**
+
+The following code snippets illustrate some of the Mini Python features supported by our compiler:
+```python# Example Mini Python code
+def sum_of_squares(n):
+ if n == 0:
+  return 0
+ else:
+  return n * n + sum_of_squares(n - 1)
+
+def reverse_string(s):
+ if s == "":
+  return ""
+ else:
+  return reverse_string(s[1]) + s[0]
+
+def is_even(n):
+ if n % 2 == 0:
+  return true
+ else:
+  return false
+
+def multiply_by_three(x):
+ return x * 3
+
+def find_max(lst):
+ max_val = lst[0]
+ for num in lst:
+  if num > max_val:
+   max_val = num
+ return max_val
+
+print(sum_of_squares(4))
+print(reverse_string("hello"))
+print(is_even(8))
+print(multiply_by_three(6))
+
+for x in [1, 2, 3, 4, 5]:
+ print(find_max([x, 2, 7, 3]))
+```
+
+And then, here is an example of the AST generated for the whole program above:
+<img src="/Compiler/ast_graph.png" className="max-w-m" />
