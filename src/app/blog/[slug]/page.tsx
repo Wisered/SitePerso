@@ -23,7 +23,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const mdx = await renderMDX(post.content);
 
   return (
-    <article className="max-w-3xl py-10">
+    <article className="py-10">
       <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-2">{post.title}</h1>
       <time className="text-sm text-zinc-400">{format(new Date(post.date), "LLL d, yyyy")}</time>
   <div className="mt-8 content">{mdx}</div>

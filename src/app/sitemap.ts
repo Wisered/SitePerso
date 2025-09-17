@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/projects",
     "/blog",
     "/rootme",
+    "/contact"
   ].map((p) => ({ url: `${base}${p}` }));
 
   const posts = getAllPosts().map((p) => ({

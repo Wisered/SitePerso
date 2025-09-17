@@ -12,6 +12,7 @@ export default function Navbar() {
             <Link href="/projects" className="hover:text-white">Projects</Link>
             <Link href="/blog" className="hover:text-white">Blog</Link>
             <Link href="/about" className="hover:text-white">About</Link>
+            <Link href="/contact" className="hover:text-white">Contact</Link>
           </div>
         </div>
         <div className="flex items-center gap-3" />
