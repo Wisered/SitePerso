@@ -93,7 +93,6 @@ export default function ContactForm() {
         setSubmitStatus("error");
       }
     } catch (error) {
-      console.error("Error submitting form:", error);
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);

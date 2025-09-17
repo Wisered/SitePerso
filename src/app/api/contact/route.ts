@@ -42,7 +42,6 @@ export async function POST(request: NextRequest) {
     const toEmail = process.env.CONTACT_TO_EMAIL;
 
     if (!resendApiKey) {
-      console.error("RESEND_API_KEY n'est pas définie dans les variables d'environnement");
       return NextResponse.json(
         { error: "Configuration du serveur manquante" },
         { status: 500 }
@@ -50,7 +49,6 @@ export async function POST(request: NextRequest) {
     }
 
     if (!fromEmail || !toEmail) {
-      console.error("Variables d'environnement email manquantes");
       return NextResponse.json(
         { error: "Configuration email manquante" },
         { status: 500 }
@@ -101,7 +99,6 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Erreur lors du traitement du formulaire de contact:", error);
     return NextResponse.json(
       { error: "Erreur interne du serveur" },
       { status: 500 }
