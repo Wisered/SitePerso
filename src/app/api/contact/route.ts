@@ -29,14 +29,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Petit affichage dans le console log des données reçues par le forme
-    console.log("Données du formulaire de contact reçues:", {
-      name,
-      email,
-      subject,
-      message,
-    });
-
     // Vérification des variables d'environnement
     const resendApiKey = process.env.RESEND_API_KEY;
     const fromEmail = process.env.CONTACT_FROM_EMAIL;
@@ -90,17 +82,6 @@ export async function POST(request: NextRequest) {
       replyTo: email, // Permet de répondre directement à l'expéditeur
     });
 
-
-    // Vérification du résultat de l'envoi
-    if (emailResult.error) {
-      console.error("Erreur Resend:", emailResult.error);
-      return NextResponse.json(
-        { error: "Erreur lors de l'envoi de l'email" },
-        { status: 500 }
-      );
-    }
-
-    console.log("Email envoyé avec succès:", emailResult.data?.id);
 
     return NextResponse.json(
       { message: "Message envoyé avec succès" },
