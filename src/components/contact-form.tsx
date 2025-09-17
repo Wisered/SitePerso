@@ -196,7 +196,7 @@ export default function ContactForm() {
         {submitStatus === "error" && (
           <div className="p-4 bg-red-900/30 border border-red-500/30 rounded-lg">
             <p className="text-red-400 text-center">
-              ❌ Une erreur s'est produite lors de l'envoi. Veuillez réessayer.
+              ❌ Une erreur s&apos;est produite lors de l&apos;envoi. Veuillez réessayer.
             </p>
           </div>
         )}
