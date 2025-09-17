@@ -1,5 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from 'resend';
+import DOMPurify from 'dompurify';
+import { JSDOM } from 'jsdom';
+
+// Configuration DOMPurify pour l'environnement serveur Node.js
+const window = new JSDOM('').window;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const purify = DOMPurify(window as any);
 
 interface ContactFormData {
   name: string;
@@ -50,27 +57,33 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Sanitisation des données avec DOMPurify
+    const sanitizedName = purify.sanitize(name);
+    const sanitizedEmail = purify.sanitize(email);
+    const sanitizedSubject = purify.sanitize(subject);
+    const sanitizedMessage = purify.sanitize(message.replace(/\n/g, '<br>'));
+
     // Envoi de l'email via Resend
     const resend = new Resend(resendApiKey);
 
-    const emailResult = await resend.emails.send({
+    await resend.emails.send({
       from: fromEmail,
       to: toEmail,
-      subject: `Nouveau message de contact: ${subject}`,
+      subject: `Nouveau message de contact: ${sanitizedSubject}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;">
             Nouveau message de contact
           </h2>
           <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin: 20px 0;">
-            <p><strong>Nom:</strong> ${name}</p>
-            <p><strong>Email de réponse:</strong> ${email}</p>
-            <p><strong>Sujet:</strong> ${subject}</p>
+            <p><strong>Nom:</strong> ${sanitizedName}</p>
+            <p><strong>Email de réponse:</strong> ${sanitizedEmail}</p>
+            <p><strong>Sujet:</strong> ${sanitizedSubject}</p>
           </div>
           <div style="margin: 20px 0;">
             <p><strong>Message:</strong></p>
             <div style="background-color: #ffffff; padding: 15px; border-left: 4px solid #007bff; margin: 10px 0;">
-              ${message.replace(/\n/g, '<br>')}
+              ${sanitizedMessage}
             </div>
           </div>
           <hr style="margin: 30px 0;">
