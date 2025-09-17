@@ -15,9 +15,8 @@ export default function ContactPage() {
             Contactez-moi
           </h1>
           <p className="text-lg text-zinc-400 max-w-2xl mx-auto">
-            Vous avez un projet en tête ? Une question ? N&apos;hésitez pas à me contacter. 
-            Je serais ravi d&apos;échanger avec vous sur vos idées et de voir comment nous 
-            pourrions collaborer.
+            Vous avez une question ? Une interrogation sur un de mes projet ou sur mon parcours ? N&apos;hésitez pas à me contacter via le formulaire ci-dessous ou par email. 
+            Je ferai mon possible pour vous répondre dans les plus brefs délais. 
           </p>
         </div>
 
