@@ -9,10 +9,10 @@ export default function Home() {
   const projects = getAllProjects().slice(0, 2); // Get the 2 most recent projects
 
   return (
-    <div className="py-16 sm:py-24 space-y-16">
+    <div className="py-16 sm:py-12 space-y-16">
       {/* Hero Section */}
       <section>
-        <div className="max-w-3xl">
+        <div className="max-w-6xl">
           <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">
             Personal website of Arthur Saunier
           </h1>

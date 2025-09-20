@@ -17,9 +17,9 @@ export default function Navbar() {
           <div className="hidden sm:flex items-center gap-4 text-sm text-zinc-300/90">
             <Link href="/projects" className="hover:text-white">Projects</Link>
             <Link href="/blog" className="hover:text-white">Blog</Link>
-            <Link href="/about" className="hover:text-white">About</Link>
             <Link href="/documents" className="hover:text-white">Documents</Link>
             <Link href="/contact" className="hover:text-white">Contact</Link>
+            <Link href="/about" className="hover:text-white">About</Link>
           </div>
         </div>
         <div className="flex items-center gap-3">
