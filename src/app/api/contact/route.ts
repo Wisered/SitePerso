@@ -8,6 +8,102 @@ const window = new JSDOM('').window;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const purify = DOMPurify(window as any);
 
+// Rate limiting simple en mémoire
+interface RateLimitEntry {
+  count: number;
+  firstRequest: number;
+  lastRequest: number;
+}
+
+const rateLimitMap = new Map<string, RateLimitEntry>();
+
+// Configuration du rate limiting (modifiable facilement)
+const RATE_LIMIT_CONFIG = {
+  maxRequests: 2,        // 3 messages maximum
+  windowMinutes: 60,     // par fenêtre de 60 minutes
+  cleanupInterval: 3600000 // nettoyage toutes les heures (en ms)
+};
+
+// Nettoyage automatique des anciennes entrées
+setInterval(() => {
+  const now = Date.now();
+  const windowMs = RATE_LIMIT_CONFIG.windowMinutes * 60 * 1000;
+  
+  for (const [ip, entry] of rateLimitMap.entries()) {
+    if (now - entry.lastRequest > windowMs) {
+      rateLimitMap.delete(ip);
+    }
+  }
+}, RATE_LIMIT_CONFIG.cleanupInterval);
+
+function getClientIP(request: NextRequest): string {
+  // Essaye plusieurs headers pour récupérer l'IP réelle
+  const forwarded = request.headers.get('x-forwarded-for');
+  const realIP = request.headers.get('x-real-ip');
+  const cfConnectingIP = request.headers.get('cf-connecting-ip');
+  
+  if (forwarded) {
+    return forwarded.split(',')[0].trim();
+  }
+  if (realIP) {
+    return realIP;
+  }
+  if (cfConnectingIP) {
+    return cfConnectingIP;
+  }
+  
+  // Fallback vers une valeur par défaut
+  return 'localhost';
+}
+
+function checkRateLimit(ip: string): { allowed: boolean; remaining: number; resetTime: number } {
+  const now = Date.now();
+  const windowMs = RATE_LIMIT_CONFIG.windowMinutes * 60 * 1000;
+  
+  const entry = rateLimitMap.get(ip);
+  
+  if (!entry) {
+    // Première requête pour cette IP
+    rateLimitMap.set(ip, {
+      count: 1,
+      firstRequest: now,
+      lastRequest: now
+    });
+    
+    return {
+      allowed: true,
+      remaining: RATE_LIMIT_CONFIG.maxRequests - 1,
+      resetTime: now + windowMs
+    };
+  }
+  
+  // Vérifie si la fenêtre de temps a expiré
+  if (now - entry.firstRequest > windowMs) {
+    // Reset du compteur
+    rateLimitMap.set(ip, {
+      count: 1,
+      firstRequest: now,
+      lastRequest: now
+    });
+    
+    return {
+      allowed: true,
+      remaining: RATE_LIMIT_CONFIG.maxRequests - 1,
+      resetTime: now + windowMs
+    };
+  }
+  
+  // Increment du compteur
+  entry.count++;
+  entry.lastRequest = now;
+  
+  const allowed = entry.count <= RATE_LIMIT_CONFIG.maxRequests;
+  const remaining = Math.max(0, RATE_LIMIT_CONFIG.maxRequests - entry.count);
+  const resetTime = entry.firstRequest + windowMs;
+  
+  return { allowed, remaining, resetTime };
+}
+
 interface ContactFormData {
   name: string;
   email: string;
@@ -17,6 +113,29 @@ interface ContactFormData {
 
 export async function POST(request: NextRequest) {
   try {
+    // Vérification du rate limiting AVANT tout traitement
+    const clientIP = getClientIP(request);
+    const rateLimitResult = checkRateLimit(clientIP);
+    
+    if (!rateLimitResult.allowed) {
+      const resetTime = new Date(rateLimitResult.resetTime);
+      return NextResponse.json(
+        { 
+          error: `Limite d'envoi atteinte. Veuillez attendre avant de renvoyer un message.`,
+          resetTime: resetTime.toISOString(),
+          remaining: rateLimitResult.remaining
+        },
+        { 
+          status: 429,
+          headers: {
+            'X-RateLimit-Limit': RATE_LIMIT_CONFIG.maxRequests.toString(),
+            'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+            'X-RateLimit-Reset': rateLimitResult.resetTime.toString()
+          }
+        }
+      );
+    }
+
     const { name, email, subject, message }: ContactFormData = await request.json();
 
     // Validation des données
@@ -96,7 +215,14 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       { message: "Message envoyé avec succès" },
-      { status: 200 }
+      { 
+        status: 200,
+        headers: {
+          'X-RateLimit-Limit': RATE_LIMIT_CONFIG.maxRequests.toString(),
+          'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+          'X-RateLimit-Reset': rateLimitResult.resetTime.toString()
+        }
+      }
     );
   } catch (error) {
     return NextResponse.json(

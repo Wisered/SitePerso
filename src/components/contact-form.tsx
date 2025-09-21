@@ -26,7 +26,8 @@ export default function ContactForm() {
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error" | "rate-limited">("idle");
+  const [rateLimitMessage, setRateLimitMessage] = useState<string>("");
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -86,9 +87,15 @@ export default function ContactForm() {
         body: JSON.stringify(formData),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
         setSubmitStatus("success");
         setFormData({ name: "", email: "", subject: "", message: "" });
+      } else if (response.status === 429) {
+        // Rate limit atteint
+        setSubmitStatus("rate-limited");
+        setRateLimitMessage(data.error || "Limite d'envoi atteinte");
       } else {
         setSubmitStatus("error");
       }
@@ -196,6 +203,17 @@ export default function ContactForm() {
           <div className="p-4 bg-red-900/30 border border-red-500/30 rounded-lg">
             <p className="text-red-400 text-center">
               ❌ Une erreur s&apos;est produite lors de l&apos;envoi. Veuillez réessayer.
+            </p>
+          </div>
+        )}
+
+        {submitStatus === "rate-limited" && (
+          <div className="p-4 bg-yellow-900/30 border border-yellow-500/30 rounded-lg">
+            <p className="text-yellow-400 text-center">
+              ⏳ {rateLimitMessage}
+            </p>
+            <p className="text-yellow-300 text-center text-sm mt-2">
+              Pour éviter le spam, il y a une limite de 3 messages par heure.
             </p>
           </div>
         )}

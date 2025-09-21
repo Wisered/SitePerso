@@ -1,4 +1,4 @@
-import { Download, FileText, Award } from "lucide-react";
+import { Download, FileText } from "lucide-react";
 
 export const metadata = {
   title: "Documents",
@@ -63,7 +63,7 @@ function DocumentCard({ document }: { document: Document }) {
 
 export default function DocumentsPage() {
   const cvDocuments = documents.filter(doc => doc.type === "cv");
-  const recommendationDocuments = documents.filter(doc => doc.type === "recommendation");
+  // const recommendationDocuments = documents.filter(doc => doc.type === "recommendation");
 
   return (
     <section className="py-12 sm:py-16">
