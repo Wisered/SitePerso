@@ -1,0 +1,52 @@
+---
+slug: softwaresecpart2
+title: SecFit Security Hardening (part 2)
+date: 2025-04-02
+summary: Remediation of vulnerabilities in the SecFit platform following OWASP WSTG guidelines
+cover: /Projects/Softwaresecpart2/Title.png
+tech:
+  - Python
+  - Django
+  - React
+  - Nginx
+  - JWT
+  - django-axes
+  - DOMPurify
+external: https://github.com/Wisered/PenTestExercise
+---
+
+The **SecFit Security Hardening** project documents the remediation phase of the *SecFit Vulnerability Assessment* carried out in TDT4237 (Software Security and Data Privacy) at NTNU.  
+It focused on **fixing identified vulnerabilities** by applying secure coding practices, updating configurations, and aligning the system with the **OWASP Web Security Testing Guide (WSTG)**.
+
+## **Key Fixes**
+
+- **Secure password hashing (WSTG-CRYP-04)**: replaced `UnsaltedSHA1` with strong algorithms (PBKDF2, Argon2, BCrypt).  
+- **Session security (WSTG-SESS-06/07)**: enforced logout token blacklisting and reduced JWT lifetime.  
+- **SQL Injection (WSTG-INPV-05)**: migrated raw queries to parameterized queries with Django ORM.  
+- **Authorization checks (WSTG-ATHZ-02)**: enforced recipient validation before updating offers.  
+- **Authentication (WSTG-ATHN-03/04)**: added `django-axes` lockout mechanism and protected routes in React.  
+- **Cross-Site Scripting (WSTG-INPV-02)**: sanitized user inputs with **DOMPurify** and applied CSP headers.  
+- **Encrypted communication (WSTG-ATHN-01)**: configured TLS with Nginx, enabled HTTPS and HSTS.  
+- **File upload validation (WSTG-BUSL-08/09)**: restricted file extensions, MIME types, and size with a `FileValidator`.  
+
+## **Methodology**
+
+- Applied **secure development practices** directly in the Django backend and React frontend.  
+- Configured **Nginx** and **JWT settings** for stronger session and transport security.  
+- Integrated **third-party libraries** (django-axes, DOMPurify) to mitigate brute-force and XSS attacks.  
+- Validated fixes against the original **OWASP WSTG vulnerabilities**.  
+
+## **Teamwork & Contributions**
+
+I contributed to:
+- Updating **password hashing**, **JWT session policies**, and **logout token blacklisting**  
+- Implementing **SQL injection and XSS mitigations** in the codebase  
+- Configuring **HTTPS/TLS** in Nginx and **file upload restrictions** in Django  
+- Writing technical documentation of fixes and testing their effectiveness  
+
+This project provided valuable experience in **secure development lifecycle (SDLC)**, **remediation of security flaws**, and **compliance with OWASP best practices**.
+
+## **Written report**
+
+The full remediation report can be found here:
+[SecFit Security Hardening Report (PDF)](/Projects/Softwaresecpart2/SecFit_Security_Hardening_Report.pdf)

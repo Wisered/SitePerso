@@ -1,0 +1,78 @@
+---
+slug: softwaresecpart3
+title: Threat Modeling & Risk Management (part 3)
+date: 2025-04-22
+summary: Threat modeling and risk management framework for a web-based cybersecurity risk assessment tool for Air Traffic Management systems.
+cover: /Projects/Softwaresecpart3/Title.png
+tech:
+  - Web Security
+  - STRIDE
+  - Threat Modeling
+  - OWASP Threat Dragon
+  - Risk Analysis
+external: https://github.com/Wisered/PenTestExercise
+---
+
+The **SecFit Threat Modeling & Risk Management** project is part of TDT4237 (Software Security and Data Privacy) at NTNU.  
+It focused on **analyzing and mitigating risks** for a web-based cybersecurity risk assessment tool designed to support Air Traffic Management (ATM) systems, using **STRIDE threat modeling**, misuse cases, and a **Data Flow Diagram (DFD)** created with OWASP Threat Dragon.
+
+## **Key Business Assets & Goals**
+
+- **Assets**: stored risk assessment data, reference lists, and the web tool itself.  
+- **Goals**: simplify risk assessments, improve ATM security and safety, provide a trusted tool.  
+
+## **Business Risks**
+
+- **BR01**: Unauthorized access to stored risk assessments → High risk.  
+- **BR02**: Tool failure (DoS/server outage) → High risk.  
+- **BR03**: Inaccurate risk scoring → Critical risk.  
+- **BR04**: Loss/corruption of catalog data → Medium risk.  
+- **BR05**: Loss of user trust → Medium risk.  
+
+## **Identified Threats (STRIDE)**
+
+- **Spoofing**: identity spoofing, login exploitation.  
+- **Tampering**: database modifications, catalog corruption.  
+- **Repudiation**: lack of traceability in frontend actions.  
+- **Information Disclosure**: credential interception, sensitive data leaks.  
+- **Denial of Service**: DoS attacks on catalog or database.  
+- **Elevation of Privilege**: privilege escalation via frontend flaws.  
+
+## **Technical Risks**
+
+- **TR1**: SQL Injection → SR1: validate/sanitize database queries.  
+- **TR2**: Denial-of-Service → SR2: rate limiting & traffic filtering.  
+- **TR3**: Insecure Data Storage → SR3: encrypt stored data.  
+- **TR4**: Weak Authentication → SR4: enforce MFA & strong passwords.  
+- **TR5**: Insecure APIs → SR5: API authentication & input validation.  
+- **TR6**: Lack of Logging → SR6: tamper-evident logging.  
+- **TR7**: XSS → SR7: sanitize user content & apply CSP.  
+- **TR8**: Outdated Components → SR8: patch & update dependencies.  
+- **TR9**: Unvalidated Inputs → SR9: input validation & allow-lists.  
+- **TR10**: Broken Access Control → SR10: enforce least privilege server-side.  
+
+## **Test Plan Highlights**
+
+- **T1**: Automated SQL injection testing (SQLMap).  
+- **T2**: Simulated DoS attacks (LOIC, Slowloris).  
+- **T3**: Verify database encryption and unauthorized access prevention.  
+- **T4**: Test brute force attacks & MFA enforcement.  
+- **T5**: API fuzzing & malformed request testing.  
+- **T6**: Logging verification during critical actions.  
+- **T7**: XSS payload testing and CSP enforcement.  
+- **T8**: Dependency scanning & CVE patch verification.  
+- **T9**: Fuzz testing across inputs for injection vulnerabilities.  
+- **T10**: Privilege escalation testing for access control.  
+
+## **Summary of Findings**
+
+By combining **business risk identification**, **STRIDE threat modeling**, and **technical risk analysis**, the team derived **security requirements and a test plan** that improve the resilience of the risk assessment tool.  
+This structured approach ensures **safer operations, stronger system reliability, and higher trust** for ATM risk assessments.
+
+## **Visual Aids**
+
+- **Misuse Case Diagram**: illustrates unauthorized access scenarios.  
+- **Data Flow Diagram (DFD)**: shows data flows, user interactions, and potential attack points.
+
+The full report is available here:
+[Threat Modeling & Risk Management Report (PDF)](/Projects/Softwaresecpart3/ThreatModeling_Report.pdf)

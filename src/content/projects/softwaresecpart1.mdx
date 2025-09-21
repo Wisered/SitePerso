@@ -1,0 +1,50 @@
+---
+slug: softwaresecpart1
+title: SecFit Vulnerability Assessment (part 1)
+date: 2025-02-26
+summary: Security audit of the SecFit platform using White-Box and Black-Box testing based on OWASP standards
+cover: /Projects/Softwaresecpart1/Title.png
+tech:
+  - Python
+  - Django
+  - React
+  - OWASP ZAP
+  - BurpSuite
+external: https://github.com/Wisered/PenTestExercise
+---
+
+The **SecFit Vulnerability Assessment** is a project carried out as part of TDT4237 (Software Security and Data Privacy) at NTNU.
+It focused on analyzing a web application (*SecFit*) to identify **security vulnerabilities** using both **White-Box** (source code inspection) and **Black-Box** (penetration testing) approaches, based on the **OWASP Testing Guide (WSTG)**.
+
+## **Key Findings**
+
+- **Unencrypted communication (WSTG-ATHN-01)**: credentials sent over HTTP instead of HTTPS.  
+- **Weak credentials (WSTG-ATHN-02)**: default `admin/admin` login found in the database.  
+- **Brute-force vulnerability (WSTG-ATHN-03)**: no lockout mechanism implemented.  
+- **User enumeration (WSTG-IDNT-04)**: accounts and emails were exposed.  
+- **Cross-Site Scripting (WSTG-INPV-02)**: `dangerouslySetInnerHTML` allowed injection of malicious scripts.  
+- **SQL Injection (WSTG-INPV-05)**: raw SQL queries executed without validation.  
+- **Improper session management (WSTG-SESS-06)**: tokens remained valid after logout.  
+- **File upload abuse (WSTG-BUSL-08)**: no restriction on file type or size, allowing malicious uploads.  
+
+## **Methodology**
+
+- **White-Box testing**: static analysis of the source code (Python/Django backend, React frontend).  
+- **Black-Box testing**: penetration testing using tools such as **Postman, OWASP ZAP, BurpSuite, Hashcat, jwt.io**.  
+- Vulnerabilities were categorized using OWASP references for clarity.  
+
+## **Teamwork & Contributions**
+
+I contributed to:
+- Source code analysis (Django backend, React frontend)  
+- SQL injection, XSS vulnerability discovery, and session management testing  
+- Penetration testing using various security tools (ZAP, BurpSuite)
+- Exploit demonstrations with Postman and BurpSuite  
+- Documentation of vulnerabilities with screenshots  
+
+This project allowed me to gain practical experience in **web application security testing**, **secure coding practices**, and **threat modeling**.
+
+## **Written report**
+
+The full report detailing our findings and recommendations can be found here :
+[SecFit Vulnerability Assessment Report (PDF)](/Projects/Softwaresecpart1/SecFit_Vulnerability_Assessment_Report.pdf)
