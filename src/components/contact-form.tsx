@@ -33,23 +33,23 @@ export default function ContactForm() {
     const newErrors: FormErrors = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Le nom est requis";
+      newErrors.name = "Name is required";
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "L'email est requis";
+      newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Format d'email invalide";
+      newErrors.email = "Invalid email format";
     }
 
     if (!formData.subject.trim()) {
-      newErrors.subject = "Le sujet est requis";
+      newErrors.subject = "Subject is required";
     }
 
     if (!formData.message.trim()) {
-      newErrors.message = "Le message est requis";
+      newErrors.message = "Message is required";
     } else if (formData.message.trim().length < 10) {
-      newErrors.message = "Le message doit contenir au moins 10 caractères";
+      newErrors.message = "Message must be at least 10 characters long";
     }
 
     setErrors(newErrors);
@@ -93,9 +93,9 @@ export default function ContactForm() {
         setSubmitStatus("success");
         setFormData({ name: "", email: "", subject: "", message: "" });
       } else if (response.status === 429) {
-        // Rate limit atteint
+        // Rate limit reached
         setSubmitStatus("rate-limited");
-        setRateLimitMessage(data.error || "Limite d'envoi atteinte");
+        setRateLimitMessage(data.error || "Sending limit reached");
       } else {
         setSubmitStatus("error");
       }
@@ -112,7 +112,7 @@ export default function ContactForm() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-zinc-200 mb-2">
-              Nom *
+              Name *
             </label>
             <input
               type="text"
@@ -123,7 +123,7 @@ export default function ContactForm() {
               className={`w-full px-4 py-3 bg-zinc-900/50 border rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
                 errors.name ? "border-red-500" : "border-zinc-700"
               }`}
-              placeholder="Votre nom"
+              placeholder="Your name"
             />
             {errors.name && <p className="mt-1 text-sm text-red-400">{errors.name}</p>}
           </div>
@@ -141,7 +141,7 @@ export default function ContactForm() {
               className={`w-full px-4 py-3 bg-zinc-900/50 border rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
                 errors.email ? "border-red-500" : "border-zinc-700"
               }`}
-              placeholder="votre@email.com"
+              placeholder="your@email.com"
             />
             {errors.email && <p className="mt-1 text-sm text-red-400">{errors.email}</p>}
           </div>
@@ -149,7 +149,7 @@ export default function ContactForm() {
 
         <div>
           <label htmlFor="subject" className="block text-sm font-medium text-zinc-200 mb-2">
-            Sujet *
+            Subject *
           </label>
           <input
             type="text"
@@ -160,7 +160,7 @@ export default function ContactForm() {
             className={`w-full px-4 py-3 bg-zinc-900/50 border rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
               errors.subject ? "border-red-500" : "border-zinc-700"
             }`}
-            placeholder="Sujet de votre message"
+            placeholder="Subject of your message"
           />
           {errors.subject && <p className="mt-1 text-sm text-red-400">{errors.subject}</p>}
         </div>
@@ -178,7 +178,7 @@ export default function ContactForm() {
             className={`w-full px-4 py-3 bg-zinc-900/50 border rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors resize-y ${
               errors.message ? "border-red-500" : "border-zinc-700"
             }`}
-            placeholder="Votre message..."
+            placeholder="Your message..."
           />
           {errors.message && <p className="mt-1 text-sm text-red-400">{errors.message}</p>}
         </div>
@@ -188,13 +188,13 @@ export default function ContactForm() {
           disabled={isSubmitting}
           className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:cursor-not-allowed text-white font-medium py-3 px-6 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-zinc-900"
         >
-          {isSubmitting ? "Envoi en cours..." : "Envoyer le message"}
+          {isSubmitting ? "Sending..." : "Send Message"}
         </button>
 
         {submitStatus === "success" && (
           <div className="p-4 bg-green-900/30 border border-green-500/30 rounded-lg">
             <p className="text-green-400 text-center">
-              ✅ Message envoyé avec succès ! Je vous répondrai dans les plus brefs délais.
+              ✅ Message sent successfully! I will reply to you as soon as possible.
             </p>
           </div>
         )}
@@ -202,7 +202,7 @@ export default function ContactForm() {
         {submitStatus === "error" && (
           <div className="p-4 bg-red-900/30 border border-red-500/30 rounded-lg">
             <p className="text-red-400 text-center">
-              ❌ Une erreur s&apos;est produite lors de l&apos;envoi. Veuillez réessayer.
+              ❌ An error occurred while sending. Please try again.
             </p>
           </div>
         )}
@@ -213,7 +213,7 @@ export default function ContactForm() {
               ⏳ {rateLimitMessage}
             </p>
             <p className="text-yellow-300 text-center text-sm mt-2">
-              Pour éviter le spam, il y a une limite de 3 messages par heure.
+              To prevent spam, there is a limit of 3 messages per hour.
             </p>
           </div>
         )}
