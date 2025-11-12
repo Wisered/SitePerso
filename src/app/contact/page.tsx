@@ -1,7 +1,7 @@
 import ContactForm from "@/components/contact-form";
 
 export const metadata = {
-  title: "Contact - Arthur Saunier",
+  title: "Contact",
   description: "Contact me to discuss your projects or for any questions.",
 };
 
