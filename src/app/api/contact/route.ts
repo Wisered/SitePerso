@@ -116,8 +116,9 @@ export async function OPTIONS() {
     status: 200,
     headers: {
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Max-Age': '86400',
     },
   });
 }
@@ -139,6 +140,7 @@ export async function POST(request: NextRequest) {
         { 
           status: 429,
           headers: {
+            'Access-Control-Allow-Origin': '*',
             'X-RateLimit-Limit': RATE_LIMIT_CONFIG.maxRequests.toString(),
             'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
             'X-RateLimit-Reset': rateLimitResult.resetTime.toString()
@@ -153,7 +155,7 @@ export async function POST(request: NextRequest) {
     if (!name || !email || !subject || !message) {
       return NextResponse.json(
         { error: "Tous les champs sont requis" },
-        { status: 400 }
+        { status: 400, headers: { 'Access-Control-Allow-Origin': '*' } }
       );
     }
 
@@ -162,7 +164,7 @@ export async function POST(request: NextRequest) {
     if (!emailRegex.test(email)) {
       return NextResponse.json(
         { error: "Format d'email invalide" },
-        { status: 400 }
+        { status: 400, headers: { 'Access-Control-Allow-Origin': '*' } }
       );
     }
 
@@ -174,14 +176,14 @@ export async function POST(request: NextRequest) {
     if (!resendApiKey) {
       return NextResponse.json(
         { error: "Configuration du serveur manquante" },
-        { status: 500 }
+        { status: 500, headers: { 'Access-Control-Allow-Origin': '*' } }
       );
     }
 
     if (!fromEmail || !toEmail) {
       return NextResponse.json(
         { error: "Configuration email manquante" },
-        { status: 500 }
+        { status: 500, headers: { 'Access-Control-Allow-Origin': '*' } }
       );
     }
 
@@ -229,6 +231,7 @@ export async function POST(request: NextRequest) {
       { 
         status: 200,
         headers: {
+          'Access-Control-Allow-Origin': '*',
           'X-RateLimit-Limit': RATE_LIMIT_CONFIG.maxRequests.toString(),
           'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
           'X-RateLimit-Reset': rateLimitResult.resetTime.toString()
@@ -238,7 +241,12 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       { error: "Erreur interne du serveur" },
-      { status: 500 }
+      {
+        status: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        }
+      }
     );
   }
 }
