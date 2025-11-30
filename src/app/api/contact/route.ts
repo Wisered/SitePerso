@@ -1,12 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from 'resend';
-import DOMPurify from 'dompurify';
-import { JSDOM } from 'jsdom';
 
-// Configuration DOMPurify pour l'environnement serveur Node.js
-const window = new JSDOM('').window;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const purify = DOMPurify(window as any);
+// Simple HTML sanitization function (replaces jsdom + DOMPurify)
+function sanitizeHtml(input: string): string {
+  return input
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/\//g, '&#x2F;');
+}
 
 // Rate limiting simple en mémoire
 interface RateLimitEntry {
@@ -192,11 +196,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Sanitisation des données avec DOMPurify
-    const sanitizedName = purify.sanitize(name);
-    const sanitizedEmail = purify.sanitize(email);
-    const sanitizedSubject = purify.sanitize(subject);
-    const sanitizedMessage = purify.sanitize(message.replace(/\n/g, '<br>'));
+    // Sanitisation des données (remplacement simple des caractères spéciaux)
+    const sanitizedName = sanitizeHtml(name);
+    const sanitizedEmail = sanitizeHtml(email);
+    const sanitizedSubject = sanitizeHtml(subject);
+    const sanitizedMessage = sanitizeHtml(message).replace(/\n/g, '<br>');
 
     // Envoi de l'email via Resend
     const resend = new Resend(resendApiKey);
