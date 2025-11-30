@@ -125,8 +125,13 @@ export async function OPTIONS() {
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('Contact form POST request received at:', new Date().toISOString());
+    console.log('Request method:', request.method);
+    console.log('Request headers:', Object.fromEntries(request.headers.entries()));
+    
     // Vérification du rate limiting AVANT tout traitement
     const clientIP = getClientIP(request);
+    console.log('Client IP detected:', clientIP);
     const rateLimitResult = checkRateLimit(clientIP);
     
     if (!rateLimitResult.allowed) {
@@ -239,8 +244,20 @@ export async function POST(request: NextRequest) {
       }
     );
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorStack = error instanceof Error ? error.stack : '';
+    console.error('Contact form error:', {
+      message: errorMessage,
+      stack: errorStack,
+      timestamp: new Date().toISOString(),
+    });
+    
     return NextResponse.json(
-      { error: "Erreur interne du serveur" },
+      { 
+        error: "Erreur interne du serveur",
+        details: errorMessage,
+        timestamp: new Date().toISOString()
+      },
       {
         status: 500,
         headers: {
